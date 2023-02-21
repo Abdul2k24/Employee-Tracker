@@ -10,13 +10,13 @@ class Database {
     viewAllDepartments() {
         return this.connection.query("SELECT * FROM department");
     }
-    ViewAllRoles(){
+    viewAllRoles(){
         return this.connection.query(
             "SELECT * FROM roles JOIN department ON department.id = roles.depart_id"
         );
     }
 
-    ViewAllEmployees() {
+    viewAllEmployees() {
         return this.connection.query(
             "SELECT * FROM eomployees JOIN roles ON roles.id = employees.role_id JOIN department_id = this.viewAllDepartments.id JOIN eomployees e ON e.id = employees.manager"
         );
@@ -24,12 +24,12 @@ class Database {
 
      addDepartment (departmentName) {
         return this.connection.query(
-            "INSERT INTO departments SET name = ?",
+            "INSERT INTO department SET name = ?",
             departmentName
          );
     }
 
-    addRoles(title, salary, department_id) {
+    addRole(title, salary, department_id) {
         return this.connection.query(
             "INSERT INTO roles SET title = ?, salary = ?, department_id = ?",
             [ title, salary, department_id]
