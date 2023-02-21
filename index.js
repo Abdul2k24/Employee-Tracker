@@ -1,14 +1,14 @@
-const inqurer = require("inquirer");
-const { default: Choices } = require("inquirer/lib/objects/choices");
+const inquirer = require("inquirer");
+const { default: choices } = require("inquirer/lib/objects/choices");
 const { async } = require("rxjs");
 const database = require("./helper/database");
 
 async function menu() {
-  const answers = await inqurer.prompt([
+  const answers = await inquirer.prompt([
     {
       type: "list",
-      Message: "What would you like to do?",
-      Choices: [
+      message: "What would you like to do?",
+      choices: [
         "View all Departmets",
         "View all Roles",
         "View all Employees",
@@ -33,7 +33,7 @@ async function menu() {
     }
     case "View all Employees": {    
         await viewAllEmployees();
-        await menu;
+        await menu();
         break;
     }
     case "Add a Department": {
@@ -42,18 +42,19 @@ async function menu() {
         break;
 
     }
-    case "Add a role": {
+    case "Add a Role": {
         await addRole();
         await menu();
         break;
 
     }
     case "Add an Employee": {
-        
+        await addEmployees();
+        await menu();
         break;
     }
     default: {
-        proces.exit(0);
+        process.exit(0);
     }
   }
 }
@@ -65,7 +66,7 @@ console.table(departments);
 
 async function viewAllRoles() {
     const roles = await database.viewAllRoles();
-    console.tablr(roles);
+    console.table(roles);
 }
 
 async function viewAllEmployees(){
@@ -74,9 +75,9 @@ async function viewAllEmployees(){
 }
 
 async function addDepartment() {
-    const answer = await inqurer.prompt([{
+    const answer = await inquirer.prompt([{
         type: "input",
-        messege: "what is the the name of this new department?",
+        message: "what is the the name of this new department?",
         name: "departmentName"
     }]);
     await database.addDepartment(answer.departmentName);
@@ -85,27 +86,28 @@ async function addDepartment() {
 
 async function addRole() {
     const departments = await database.viewAllDepartments();
-    const answers = await inqurer.prompt([
+    const answers = await inquirer.prompt([
         {
             type: "input",
-            messege: "what is the title of the role?",
+            message: "what is the title of the role?",
             name: "title"
         },
         {
             type: "input",
-            messege: "What is the salary for the role?",
+            message: "What is the salary for the role?",
             name: "salary" 
         },
         {   type: "list",
             messege:"What department does this role belong to?",
-            choices: departments,
+            choices: departments.map(department => department.name),
             name: "department"
         }
     ]);
     for(let i = 0; i < departments.length; i++) {
         if(answers.department === departments[i].name) {
             console.log(departments[i].id);
-            await database.addRole(answers.title, answers.salary, departments[i]);
+            await database.addRole(answers.title, answers.salary, departments[i].id);
+
         }
     }
     console.log("Role added!");
@@ -116,33 +118,35 @@ const roles = await database.viewAllRoles();
 console.log(roles);
 const rolesTitle = roles.map(role => role.title);
 const managers = await database.viewAllEmployees();
+console.log(managers);
 const managersName = managers.map((manager) => {
     return `${manager.first_name} ${manager.last_name}`
-}).push("No Manager");
+});
+managersName.push("No Manager");
 
 let roleId;
 let manager_Id;
 
-const answers = await inqurer.prompt([
+const answers = await inquirer.prompt([
  {
     type: "input",
-    messege: "what is the employees first name?",
+    message: "what is the employees first name?",
     name: "firstName"
  },
  {
     type: "input",
-    messege: "what is the employees last name?",
+    message: "what is the employees last name?",
     name: "lastName"
  },
  {
     type: "list",
-    messege: "what is the the employees role?",
+    message: "what is the the employees role?",
     choices: rolesTitle,
     name: "role"
  },
  {
  type: "list",
- messege: "who is the the employees manager?",
+ message: "who is the the employees manager?",
  choices: managersName,
  name: "manager"
 }
@@ -157,7 +161,11 @@ for(let i = 0; i < managers.length; i++) {
         manager_Id = managers[i].id
     }  
 }
-
+if(!manager_Id) {
+    managerId = null
+}
+await database.addEmployees(answers.first_name, answers.last_name, roleId, manager_Id);
+console.log("Employee Added");
 }
 
 
