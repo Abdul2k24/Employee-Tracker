@@ -9,3 +9,7 @@ const connection = mysql.createConnection(
 },
 console.log("connected to the employee_db database")
 );
+
+connection.query = util.prosify(connection. query);
+
+module.exports = connection;
