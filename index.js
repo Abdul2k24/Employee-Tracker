@@ -88,7 +88,7 @@ async function addRole() {
     const answers = await inqurer.prompt([
         {
             type: "input",
-            messege: "what is the tutle of the role?",
+            messege: "what is the title of the role?",
             name: "title"
         },
         {
@@ -112,6 +112,51 @@ async function addRole() {
 }
 
 async function addEmployees() {
+const roles = await database.viewAllRoles();
+console.log(roles);
+const rolesTitle = roles.map(role => role.title);
+const managers = await database.viewAllEmployees();
+const managersName = managers.map((manager) => {
+    return `${manager.first_name} ${manager.last_name}`
+}).push("No Manager");
+
+let roleId;
+let manager_Id;
+
+const answers = await inqurer.prompt([
+ {
+    type: "input",
+    messege: "what is the employees first name?",
+    name: "firstName"
+ },
+ {
+    type: "input",
+    messege: "what is the employees last name?",
+    name: "lastName"
+ },
+ {
+    type: "list",
+    messege: "what is the the employees role?",
+    choices: rolesTitle,
+    name: "role"
+ },
+ {
+ type: "list",
+ messege: "who is the the employees manager?",
+ choices: managersName,
+ name: "manager"
+}
+]);
+for(let i = 0; i < roles.length; i++) {
+    if(answers.role === roles[i].title) {
+        roleId = roles[i].id;
+    }
+}
+for(let i = 0; i < managers.length; i++) {
+    if(answers.manager === `${manager.first_name} ${manager.last_name}`) {
+        manager_Id = managers[i].id
+    }  
+}
 
 }
 
