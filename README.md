@@ -18,6 +18,7 @@ Mysql2, Inquirer package and Node Js (npm install)
 
 ## USAGE/INSTRUCTIONS:
 Here is a walkthrough of me working through this challange
+https://drive.google.com/file/d/1WfLeijicJrog6257HAuSYaphgXgHBz9V/view
 
 
 
