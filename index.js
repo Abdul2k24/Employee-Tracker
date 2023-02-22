@@ -1,6 +1,4 @@
 const inquirer = require("inquirer");
-const { default: choices } = require("inquirer/lib/objects/choices");
-const { async } = require("rxjs");
 const database = require("./helper/database");
 
 async function menu() {
@@ -9,7 +7,7 @@ async function menu() {
       type: "list",
       message: "What would you like to do?",
       choices: [
-        "View all Departmets",
+        "View all Departments",
         "View all Roles",
         "View all Employees",
         "Add a Department",
@@ -32,7 +30,8 @@ async function menu() {
         break;
     }
     case "View all Employees": {    
-        await viewAllEmployees();
+        const employees = await viewAllEmployees();
+        console.table(employees);
         await menu();
         break;
     }
@@ -71,7 +70,7 @@ async function viewAllRoles() {
 
 async function viewAllEmployees(){
     const employees = await database.viewAllEmployees();
-    console.table(employees);
+    return employees
 }
 
 async function addDepartment() {

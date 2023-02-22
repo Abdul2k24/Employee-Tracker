@@ -11,10 +11,10 @@ VALUES ("Police", 50000, 1),
 
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("John", "James", 1, NULL),
-("Kobe", "Bryant", 2, NULL)
-("Micheal", "Jordan", 3, 1 NULL)
-("Lebron", "James", 3, NULL)
-("Dwight", "Howard", 2, NULL)
-("Trey", "Burke", 1, 2 NULL)
-("Kyrie", "Irving", 2, 3 NULL)
-("Kevin", "Duranr", 1, 4 NULL)
+("Kobe", "Bryant", 2, NULL),
+("Micheal", "Jordan", 3,  NULL),
+("Lebron", "James", 3, NULL),
+("Dwight", "Howard", 2, NULL),
+("Trey", "Burke", 1, NULL),
+("Kyrie", "Irving", 2, NULL),
+("Kevin", "Duranr", 1, NULL);

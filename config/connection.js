@@ -10,6 +10,6 @@ const connection = mysql.createConnection(
 console.log("connected to the employee_db database")
 );
 
-connection.query = util.promisify(connection. query);
+connection.query = util.promisify(connection.query);
 
 module.exports = connection;
